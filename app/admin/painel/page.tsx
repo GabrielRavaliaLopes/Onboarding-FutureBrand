@@ -204,7 +204,7 @@ export default function PainelPage() {
           {error && <p className="error-text">{error}</p>}
 
           <div className="fixed-preview">
-            <div className="fixed-preview-title">Conteúdo fixo incluído automaticamente</div>
+            <div className="fixed-preview-title">Conteúdo fixo incluído</div>
             <FixedContent />
           </div>
         </form>
