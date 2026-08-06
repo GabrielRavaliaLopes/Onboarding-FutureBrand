@@ -19,7 +19,7 @@ const mwSans = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Onboarding seguro",
+  title: "Onboarding",
   description: "Compartilhamento seguro de credenciais de acesso para novos colaboradores",
 };
 
