@@ -9,9 +9,9 @@ export default function Home() {
       </div>
       <h1>Compartilhamento seguro de credenciais</h1>
       <p className="lead">
-        Gere um link (e QR code) por colaborador. As credenciais somem sozinhas em 24h ou
-        48h — mas o passo a passo de impressora, SoloApp e ferramentas de trabalho continua
-        disponível no mesmo link para sempre.
+        Gere um link (e QR code) por colaborador e escolha a data e a hora exatas de
+        vencimento. Depois disso, as credenciais somem, mas o passo a passo de impressora,
+        SoloApp e ferramentas de trabalho continua disponível no mesmo link.
       </p>
       <div className="card">
         <Link href="/admin">
