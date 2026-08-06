@@ -137,7 +137,7 @@ export default function PainelPage() {
     <div className="container">
       <div className="eyebrow">
         <span className="seal" style={{ width: 20, height: 20 }} />
-        novo onboarding
+        onboarding
       </div>
       <h1>Credenciais de acesso</h1>
       <p className="lead">
@@ -235,7 +235,7 @@ export default function PainelPage() {
           {error && <p className="error-text">{error}</p>}
 
           <div className="fixed-preview">
-            <div className="fixed-preview-title">Conteúdo fixo incluído automaticamente</div>
+            <div className="fixed-preview-title">Conteúdo fixo</div>
             <FixedContent />
           </div>
         </form>
@@ -265,8 +265,7 @@ export default function PainelPage() {
 
       <p className="footer-note">
         A chave de criptografia faz parte do link (depois do #) e nunca é enviada ao
-        servidor. Sem o link completo, ninguém consegue ler as credenciais — nem quem tem
-        acesso ao banco de dados.
+        servidor. Sem o link completo, ninguém consegue ler as credenciais.
       </p>
     </div>
   );
