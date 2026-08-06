@@ -14,6 +14,7 @@ const mwSans = localFont({
   ],
   variable: "--font-mw-sans",
   display: "swap",
+  fallback: [],
 });
 
 export const metadata: Metadata = {
