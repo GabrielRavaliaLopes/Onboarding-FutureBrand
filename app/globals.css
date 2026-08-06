@@ -11,7 +11,7 @@
   --accent-ink: #fff;
   --warn: #8a6715;
   --danger: #b83232;
-  --font-brand: var(--font-mw-sans), Arial, sans-serif;
+  --font-brand: var(--font-mw-sans);
   --radius: 2px;
 }
 

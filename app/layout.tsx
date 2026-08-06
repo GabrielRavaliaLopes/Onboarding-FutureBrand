@@ -23,8 +23,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR">
-      <body className={mwSans.variable}>
+    <html lang="pt-BR" className={mwSans.variable}>
+      <body>
         <header className="brand-header">
           <Image
             className="brand-logo"
