@@ -29,4 +29,4 @@ export const FERRAMENTAS = [
 ];
 
 export const TEXTO_AJUDA =
-  "Se precisar de ajuda e o TI ou Administrativo não estiver disponível, fale com a Recepção.";
+  "Escolha o canal mais adequado para falar com a recepção da FutureBrand ou solicitar suporte de TI à Solo Tecnologia.";
