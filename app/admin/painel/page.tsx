@@ -15,6 +15,8 @@ type FormState = {
   outrasInfos: string;
 };
 
+type EmailStatus = "idle" | "sending" | "sent" | "failed";
+
 const EMPTY: FormState = {
   nomeColaborador: "",
   loginUsuario: "",
@@ -33,6 +35,9 @@ export default function PainelPage() {
   const [link, setLink] = useState<string | null>(null);
   const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [emailStatus, setEmailStatus] = useState<EmailStatus>("idle");
+  const [emailError, setEmailError] = useState<string | null>(null);
+  const [onboardingId, setOnboardingId] = useState<string | null>(null);
 
   function update<K extends keyof FormState>(key: K, value: string) {
     setForm((f) => ({ ...f, [key]: value }));
@@ -43,6 +48,8 @@ export default function PainelPage() {
     setError(null);
     setLoading(true);
     setLink(null);
+    setEmailStatus("idle");
+    setEmailError(null);
     try {
       const payload: Partial<FormState> = {
         loginUsuario: form.loginUsuario,
@@ -77,6 +84,7 @@ export default function PainelPage() {
 
       const url = `${window.location.origin}/view/${data.id}#${keyStr}`;
       setLink(url);
+      setOnboardingId(data.id);
 
       const qr = await QRCode.toDataURL(url, {
         width: 400,
@@ -84,10 +92,42 @@ export default function PainelPage() {
         color: { dark: "#0b1220", light: "#ffffff" },
       });
       setQrDataUrl(qr);
+      await sendOnboardingEmail(data.id, url, qr);
     } catch {
       setError("Erro ao criptografar ou salvar os dados. Tente novamente.");
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function sendOnboardingEmail(id: string, url: string, qr: string) {
+    setEmailStatus("sending");
+    setEmailError(null);
+
+    try {
+      const response = await fetch("/api/admin/send-onboarding", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          to: form.loginUsuario.trim(),
+          collaboratorName: form.nomeColaborador.trim(),
+          onboardingUrl: url,
+          qrDataUrl: qr,
+          onboardingId: id,
+        }),
+      });
+      const result = await response.json();
+
+      if (!response.ok) {
+        setEmailStatus("failed");
+        setEmailError(result.error || "Não foi possível enviar o e-mail.");
+        return;
+      }
+
+      setEmailStatus("sent");
+    } catch {
+      setEmailStatus("failed");
+      setEmailError("Não foi possível enviar o e-mail. Tente novamente.");
     }
   }
 
@@ -105,6 +145,9 @@ export default function PainelPage() {
     setLink(null);
     setQrDataUrl(null);
     setError(null);
+    setEmailStatus("idle");
+    setEmailError(null);
+    setOnboardingId(null);
   }
 
   return (
@@ -134,8 +177,15 @@ export default function PainelPage() {
 
           <div className="section-title">Usuário e senha da máquina e e-mail</div>
           <div className="field">
-            <label>Usuário</label>
-            <input value={form.loginUsuario} onChange={(e) => update("loginUsuario", e.target.value)} />
+            <label>E-mail do colaborador</label>
+            <input
+              type="email"
+              autoComplete="off"
+              value={form.loginUsuario}
+              onChange={(e) => update("loginUsuario", e.target.value)}
+              placeholder="nome@futurebrand.com.br"
+              required
+            />
           </div>
           <div className="field">
             <label>Senha temporária</label>
@@ -208,6 +258,24 @@ export default function PainelPage() {
               <img src={qrDataUrl} alt="QR code do link de onboarding" />
             </div>
           )}
+          <div className={`email-delivery email-delivery-${emailStatus}`} role="status">
+            {emailStatus === "sending" && "Enviando o onboarding por e-mail..."}
+            {emailStatus === "sent" && `E-mail enviado para ${form.loginUsuario}.`}
+            {emailStatus === "failed" && (
+              <>
+                <span>{emailError}</span>
+                {onboardingId && qrDataUrl && link && (
+                  <button
+                    className="ghost"
+                    type="button"
+                    onClick={() => sendOnboardingEmail(onboardingId, link, qrDataUrl)}
+                  >
+                    Tentar enviar novamente
+                  </button>
+                )}
+              </>
+            )}
+          </div>
           <div style={{ display: "flex", gap: 10, marginTop: 14 }}>
             <button className="ghost" onClick={handleCopy} type="button">
               {copied ? "Copiado!" : "Copiar link"}
@@ -220,8 +288,9 @@ export default function PainelPage() {
       )}
 
       <p className="footer-note">
-        A chave de criptografia faz parte do link (depois do #) e nunca é enviada ao
-        servidor. Sem o link completo, ninguém consegue ler as credenciais.
+        A chave de criptografia faz parte do link (depois do #) e não é armazenada junto
+        às credenciais. No envio automático, o link completo é encaminhado de forma segura
+        ao serviço de e-mail. Compartilhe-o somente com o colaborador.
       </p>
     </div>
   );

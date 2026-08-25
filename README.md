@@ -7,17 +7,21 @@ Um link e QR Code por colaborador, reunindo credenciais temporárias e orientaç
 1. O TI entra em `/admin`, faz login e preenche o formulário de onboarding.
 2. As credenciais são criptografadas no navegador com AES-256-GCM antes de saírem da máquina do TI.
 3. O sistema gera um link no formato `https://seudominio.com/view/identificador#chave` e seu QR Code.
-4. O colaborador consulta a senha temporária, altera a senha corporativa e segue o registro no Microsoft Entra.
-5. O mesmo link também apresenta orientações sobre impressora, SoloApp, ferramentas e canais de atendimento.
+4. O link e o QR Code são enviados automaticamente ao e-mail informado como usuário do colaborador.
+5. O colaborador consulta a senha temporária, altera a senha corporativa e segue o registro no Microsoft Entra.
+6. O mesmo link também apresenta orientações sobre impressora, SoloApp, ferramentas e canais de atendimento.
 
 O link não é de uso único e não possui vencimento automático. As credenciais continuam cifradas no Redis e só
-podem ser abertas por quem possui o link completo, incluindo a chave que aparece depois de `#`.
+podem ser abertas por quem possui o link completo, incluindo a chave que aparece depois de `#`. A chave não é
+armazenada junto às credenciais; para realizar o envio automático, o link completo é processado pelo Resend e
+entregue ao e-mail do colaborador.
 
 ## Stack
 
 - Next.js 14 (App Router) e TypeScript
 - Upstash Redis para armazenar as credenciais cifradas
 - Vercel para hospedagem
+- Resend para o envio transacional do onboarding
 
 ## Variáveis de ambiente
 
@@ -28,6 +32,9 @@ podem ser abertas por quem possui o link completo, incluindo a chave que aparece
 | `UPSTASH_REDIS_REST_URL` | URL do banco Upstash Redis |
 | `UPSTASH_REDIS_REST_TOKEN` | Token do banco Upstash Redis |
 | `NEXT_PUBLIC_RECEPCAO_WHATSAPP` | WhatsApp da Recepção no formato `55DDDNUMERO` |
+| `RESEND_API_KEY` | Chave secreta da API do Resend |
+| `RESEND_FROM_EMAIL` | Remetente verificado, como `Onboarding FutureBrand <onboarding@futurebrand.com.br>` |
+| `RESEND_REPLY_TO` | Endereço opcional que receberá as respostas dos colaboradores |
 
 ## Rodando localmente
 

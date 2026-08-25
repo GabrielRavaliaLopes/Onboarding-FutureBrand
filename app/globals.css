@@ -493,6 +493,22 @@ a.support-channel:hover { background: var(--surface-hover); border-color: var(--
   border-radius: var(--radius);
 }
 .qrcode-box img { display: block; width: 200px; height: 200px; }
+.email-delivery {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 18px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  font-size: 15px;
+  line-height: 1.45;
+}
+.email-delivery-idle { display: none; }
+.email-delivery-sending { color: var(--text-muted); background: var(--surface-2); }
+.email-delivery-sent { color: #185c37; background: #edf8f1; border-color: #b9dfc7; }
+.email-delivery-failed { color: #842029; background: #fff2f2; border-color: #efc1c5; }
+.email-delivery .ghost { flex: 0 0 auto; }
 
 @media (max-width: 640px) {
   .brand-header { height: 76px; padding: 0 20px; }
@@ -523,4 +539,5 @@ a.support-channel:hover { background: var(--surface-hover); border-color: var(--
   }
   .support-channel-grid { grid-template-columns: 1fr; }
   .support-channel-static { grid-column: auto; }
+  .email-delivery { align-items: stretch; flex-direction: column; }
 }
