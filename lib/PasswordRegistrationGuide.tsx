@@ -124,21 +124,25 @@ export default function PasswordRegistrationGuide() {
         </a>
       </div>
 
-      <div className="section-title" id="password-guide-title">
-        Passo a passo — Registro no Portal da Empresa
+      <div className="registration-callout">
+        <div className="registration-callout-eyebrow">
+          <span aria-hidden="true">!</span>
+          Próxima etapa obrigatória
+        </div>
+        <h2 id="password-guide-title">Registro no Portal da Empresa</h2>
+        <p className="password-guide-intro">
+          Após alterar sua senha corporativa, conclua o registro no <strong>Microsoft Entra</strong> para sincronizar a
+          nova senha com o seu Mac.
+        </p>
+        <button
+          className="support-trigger"
+          type="button"
+          onClick={() => setShowGuide(true)}
+          aria-haspopup="dialog"
+        >
+          Abrir passo a passo do registro
+        </button>
       </div>
-      <p className="password-guide-intro">
-        Após alterar sua senha corporativa, conclua o registro no <strong>Microsoft Entra</strong> para sincronizar a
-        nova senha com o seu Mac.
-      </p>
-      <button
-        className="support-trigger"
-        type="button"
-        onClick={() => setShowGuide(true)}
-        aria-haspopup="dialog"
-      >
-        Abrir passo a passo do registro
-      </button>
 
       {showGuide && (
         <div

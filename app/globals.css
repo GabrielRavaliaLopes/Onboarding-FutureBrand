@@ -283,7 +283,52 @@ button.ghost:hover { background: #efefec; border-color: #777; }
   transition: background .18s ease, color .18s ease;
 }
 .password-reset-card a:hover { color: #fff; background: #222; }
-.password-guide-intro { margin: 0 0 16px; color: var(--text-muted); font-size: 16px; line-height: 1.65; }
+.registration-callout {
+  position: relative;
+  margin-top: 18px;
+  padding: 25px 26px 26px;
+  overflow: hidden;
+  background: var(--surface-2);
+  border: 1px solid var(--border-strong);
+  border-left: 4px solid #000;
+  border-radius: 5px;
+}
+.registration-callout::after {
+  position: absolute;
+  top: -44px;
+  right: -44px;
+  width: 108px;
+  height: 108px;
+  background: rgb(0 0 0 / 4%);
+  border-radius: 50%;
+  content: "";
+  pointer-events: none;
+}
+.registration-callout-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  color: #3d3d39;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.registration-callout-eyebrow span {
+  display: grid;
+  width: 20px;
+  height: 20px;
+  place-items: center;
+  color: #fff;
+  background: #000;
+  border-radius: 50%;
+  font-size: 12px;
+  letter-spacing: 0;
+}
+.registration-callout h2 { position: relative; margin: 0; font-size: 27px; line-height: 1.1; }
+.password-guide-intro { position: relative; max-width: 590px; margin: 11px 0 17px; color: #4f4f4a; font-size: 16px; line-height: 1.65; }
+.registration-callout .support-trigger { position: relative; }
 .password-steps { display: grid; gap: 14px; margin: 0; padding: 0; list-style: none; }
 .password-step {
   padding: 22px;
@@ -460,6 +505,9 @@ a.support-channel:hover { background: var(--surface-hover); border-color: var(--
   .credential-row { align-items: flex-start; }
   .password-reset-card { align-items: stretch; flex-direction: column; padding: 20px; }
   .password-reset-card a { min-width: 0; width: 100%; }
+  .registration-callout { padding: 22px 20px 23px; }
+  .registration-callout h2 { font-size: 24px; }
+  .registration-callout .support-trigger { width: 100%; }
   .password-step { padding: 18px; }
   .password-step h3 { font-size: 18px; }
   .password-step-image { padding: 6px; }
