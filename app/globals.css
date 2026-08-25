@@ -362,6 +362,7 @@ button.ghost:hover { background: #efefec; border-color: #777; }
   border-radius: 8px;
   box-shadow: 0 24px 80px rgb(0 0 0 / 24%);
 }
+.registration-modal { width: min(100%, 780px); }
 .support-modal-header {
   display: flex;
   align-items: flex-start;

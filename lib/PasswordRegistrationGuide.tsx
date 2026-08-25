@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 
 const PASSWORD_CHANGE_URL =
   "https://mysignins.microsoft.com/security-info/password/change";
@@ -85,6 +88,26 @@ const STEPS = [
 ];
 
 export default function PasswordRegistrationGuide() {
+  const [showGuide, setShowGuide] = useState(false);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!showGuide) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setShowGuide(false);
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    document.body.style.overflow = "hidden";
+    closeButtonRef.current?.focus();
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "";
+    };
+  }, [showGuide]);
+
   return (
     <section className="password-guide" aria-labelledby="password-guide-title">
       <div className="password-reset-card">
@@ -108,38 +131,83 @@ export default function PasswordRegistrationGuide() {
         Após alterar sua senha corporativa, conclua o registro no <strong>Microsoft Entra</strong> para sincronizar a
         nova senha com o seu Mac.
       </p>
+      <button
+        className="support-trigger"
+        type="button"
+        onClick={() => setShowGuide(true)}
+        aria-haspopup="dialog"
+      >
+        Abrir passo a passo do registro
+      </button>
 
-      <ol className="password-steps">
-        {STEPS.map((step, index) => (
-          <li className="password-step" key={step.title}>
-            <div className="password-step-heading">
-              <span>{index + 1}</span>
-              <h3>{step.title}</h3>
+      {showGuide && (
+        <div
+          className="support-modal-backdrop"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) setShowGuide(false);
+          }}
+        >
+          <section
+            className="support-modal registration-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="registration-modal-title"
+            aria-describedby="registration-modal-description"
+          >
+            <div className="support-modal-header">
+              <div>
+                <div className="support-modal-eyebrow">Microsoft Entra</div>
+                <h2 id="registration-modal-title">Registro no Portal da Empresa</h2>
+              </div>
+              <button
+                ref={closeButtonRef}
+                className="support-modal-close"
+                type="button"
+                onClick={() => setShowGuide(false)}
+                aria-label="Fechar passo a passo do registro"
+              >
+                ×
+              </button>
             </div>
-            <p>{step.description}</p>
-            <div className="password-step-image">
-              <Image
-                src={step.image}
-                width={step.width}
-                height={step.height}
-                sizes="(max-width: 640px) calc(100vw - 76px), 610px"
-                alt={step.alt}
-              />
-            </div>
-          </li>
-        ))}
-      </ol>
 
-      <div className="password-complete">
-        <strong>Processo concluído!</strong>
-        <p>
-          A senha da sua conta corporativa e a senha usada para iniciar sessão no Mac estarão sincronizadas.
-        </p>
-        <p>
-          <strong>Importante:</strong> Outlook, Teams e OneDrive podem solicitar que você entre novamente. Nesse caso,
-          use seu e-mail corporativo e a nova senha.
-        </p>
-      </div>
+            <p id="registration-modal-description" className="support-modal-intro">
+              Siga as etapas abaixo para sincronizar a nova senha corporativa com o seu Mac.
+            </p>
+
+            <ol className="password-steps">
+              {STEPS.map((step, index) => (
+                <li className="password-step" key={step.title}>
+                  <div className="password-step-heading">
+                    <span>{index + 1}</span>
+                    <h3>{step.title}</h3>
+                  </div>
+                  <p>{step.description}</p>
+                  <div className="password-step-image">
+                    <Image
+                      src={step.image}
+                      width={step.width}
+                      height={step.height}
+                      sizes="(max-width: 640px) calc(100vw - 76px), 700px"
+                      alt={step.alt}
+                    />
+                  </div>
+                </li>
+              ))}
+            </ol>
+
+            <div className="password-complete">
+              <strong>Processo concluído!</strong>
+              <p>
+                A senha da sua conta corporativa e a senha usada para iniciar sessão no Mac estarão sincronizadas.
+              </p>
+              <p>
+                <strong>Importante:</strong> Outlook, Teams e OneDrive podem solicitar que você entre novamente. Nesse
+                caso, use seu e-mail corporativo e a nova senha.
+              </p>
+            </div>
+          </section>
+        </div>
+      )}
     </section>
   );
 }
