@@ -24,29 +24,10 @@ const EMPTY: FormState = {
   outrasInfos: "",
 };
 
-const MAX_EXPIRY_DAYS = 30;
-
-function toDateTimeLocal(date: Date) {
-  const offset = date.getTimezoneOffset() * 60_000;
-  return new Date(date.getTime() - offset).toISOString().slice(0, 16);
-}
-
-function defaultExpiry() {
-  return toDateTimeLocal(new Date(Date.now() + 24 * 60 * 60 * 1000));
-}
-
-function formatExpiry(value: string) {
-  return new Intl.DateTimeFormat("pt-BR", {
-    dateStyle: "short",
-    timeStyle: "short",
-  }).format(new Date(value));
-}
-
 export default function PainelPage() {
   const [form, setForm] = useState<FormState>(EMPTY);
   const [usarAdobe, setUsarAdobe] = useState(false);
   const [usarOutras, setUsarOutras] = useState(false);
-  const [expiresAt, setExpiresAt] = useState(defaultExpiry);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [link, setLink] = useState<string | null>(null);
@@ -63,12 +44,6 @@ export default function PainelPage() {
     setLoading(true);
     setLink(null);
     try {
-      const expiryTimestamp = new Date(expiresAt).getTime();
-      if (!Number.isFinite(expiryTimestamp) || expiryTimestamp <= Date.now()) {
-        setError("Escolha uma data e hora futuras para o vencimento.");
-        return;
-      }
-
       const payload: Partial<FormState> = {
         loginUsuario: form.loginUsuario,
         loginSenha: form.loginSenha,
@@ -91,7 +66,6 @@ export default function PainelPage() {
         body: JSON.stringify({
           ciphertext,
           iv,
-          expiresAt: expiryTimestamp,
           createdFor: form.nomeColaborador,
         }),
       });
@@ -131,7 +105,6 @@ export default function PainelPage() {
     setLink(null);
     setQrDataUrl(null);
     setError(null);
-    setExpiresAt(defaultExpiry());
   }
 
   return (
@@ -142,9 +115,8 @@ export default function PainelPage() {
       </div>
       <h1>Credenciais de acesso</h1>
       <p className="lead">
-        Você escolhe a data e a hora exatas em que as credenciais deixam de aparecer. O
-        passo a passo de impressora, SoloApp e ferramentas continua disponível no mesmo
-        link, mesmo depois das credenciais expirarem.
+        Gere um link e um QR Code com as credenciais temporárias e as orientações necessárias
+        para o primeiro acesso do colaborador.
       </p>
 
       {!link ? (
@@ -212,24 +184,6 @@ export default function PainelPage() {
             </div>
           </div>
 
-          <div className="section-title">Prazo das credenciais</div>
-          <div className="field">
-            <label htmlFor="expiresAt">Data e hora de vencimento</label>
-            <input
-              id="expiresAt"
-              type="datetime-local"
-              value={expiresAt}
-              min={toDateTimeLocal(new Date())}
-              max={toDateTimeLocal(new Date(Date.now() + MAX_EXPIRY_DAYS * 24 * 60 * 60 * 1000))}
-              onChange={(e) => setExpiresAt(e.target.value)}
-              required
-            />
-            <p className="field-note">
-              No horário escolhido, o login e a senha somem automaticamente. O link
-              continua mostrando o conteúdo fixo. Prazo máximo: {MAX_EXPIRY_DAYS} dias.
-            </p>
-          </div>
-
           <button className="primary" type="submit" disabled={loading}>
             {loading ? "Gerando link..." : "Gerar link de acesso"}
           </button>
@@ -243,10 +197,10 @@ export default function PainelPage() {
         </form>
       ) : (
         <div className="card">
-          <span className="badge warn">Válidas até {formatExpiry(expiresAt)}</span>
+          <span className="badge">Onboarding pronto</span>
           <p className="lead" style={{ marginTop: 14 }}>
-            Envie este link para {form.nomeColaborador || "o colaborador"}. As credenciais
-            expiram em {formatExpiry(expiresAt)}; o conteúdo de ajuda continua disponível.
+            Envie este link ou apresente o QR Code para {form.nomeColaborador || "o colaborador"}.
+            A senha informada é temporária e deve ser alterada após o primeiro acesso.
           </p>
           <div className="link-box">{link}</div>
           {qrDataUrl && (

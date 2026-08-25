@@ -14,7 +14,7 @@ type CredPayload = {
   outrasInfos?: string;
 };
 
-type CredStatus = "loading" | "ok" | "expired" | "unavailable";
+type CredStatus = "loading" | "ok" | "unavailable";
 
 export default function ViewSecretPage() {
   const params = useParams<{ id: string }>();
@@ -29,7 +29,7 @@ export default function ViewSecretPage() {
         const json = await res.json();
 
         if (!json.available) {
-          setStatus(json.expired ? "expired" : "unavailable");
+          setStatus("unavailable");
           return;
         }
         if (!hash) {
@@ -57,8 +57,8 @@ export default function ViewSecretPage() {
       </div>
       <h1>Bem-vindo(a) à FutureBrand</h1>
       <p className="lead">
-        Aqui você encontra suas credenciais de acesso (por tempo limitado) e as
-        informações de apoio do dia a dia, que continuam disponíveis neste mesmo link.
+        Aqui você encontra suas credenciais temporárias e as informações de apoio
+        necessárias para configurar seus acessos.
       </p>
 
       {status === "loading" && <p className="lead">Carregando...</p>}
@@ -88,16 +88,6 @@ export default function ViewSecretPage() {
         </>
       )}
 
-      {status === "expired" && (
-        <div className="card">
-          <span className="badge danger">Credenciais expiradas</span>
-          <p className="lead" style={{ marginTop: 10, marginBottom: 0 }}>
-            O prazo para visualizar login e senha neste link já passou. Peça ao TI para
-            gerar um novo envio, se precisar. As informações abaixo continuam disponíveis.
-          </p>
-        </div>
-      )}
-
       {status === "unavailable" && (
         <div className="card">
           <span className="badge danger">Credenciais não encontradas</span>
@@ -108,7 +98,7 @@ export default function ViewSecretPage() {
         </div>
       )}
 
-      {(status === "expired" || status === "unavailable") && <PasswordRegistrationGuide />}
+      {status === "unavailable" && <PasswordRegistrationGuide />}
 
       <FixedContent />
     </div>

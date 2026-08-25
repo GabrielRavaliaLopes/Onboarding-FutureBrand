@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { OnboardingRecord, redis } from "@/lib/redis";
 
-// Importante: este GET não apaga o registro (não é mais "uso único").
-// O conteúdo fixo da página independe deste endpoint — ele só cuida da
-// parte de credenciais, que tem prazo próprio (credExpiresAt).
+// Este GET não apaga o registro: o mesmo QR Code pode ser consultado novamente.
+// As credenciais permanecem cifradas e só podem ser abertas com a chave do link.
 export async function GET(_req: NextRequest, { params }: { params: { id: string } }) {
   const raw = await redis.get<string>(`onboarding:${params.id}`);
 
@@ -12,11 +11,6 @@ export async function GET(_req: NextRequest, { params }: { params: { id: string 
   }
 
   const record: OnboardingRecord = typeof raw === "string" ? JSON.parse(raw) : raw;
-  const expired = Date.now() >= record.credExpiresAt;
-
-  if (expired) {
-    return NextResponse.json({ available: false, expired: true });
-  }
 
   return NextResponse.json({
     available: true,

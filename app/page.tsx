@@ -9,8 +9,8 @@ export default function Home() {
       </div>
       <h1>Onboarding FutureBrand</h1>
       <p className="lead">
-        Gere um link (e QR code) por colaborador e escolha a data e a hora exatas de
-        vencimento. Depois disso, as credenciais somem, mas o passo a passo fixo, continua disponível no mesmo link.
+        Gere um link e um QR Code por colaborador com credenciais temporárias e orientações
+        para configurar os primeiros acessos.
       </p>
       <div className="card">
         <Link href="/admin">
