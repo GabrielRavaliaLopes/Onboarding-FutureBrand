@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { decryptJson, importKeyFromUrlSafeString } from "@/lib/webcrypto";
 import FixedContent from "@/lib/FixedContent";
+import PasswordRegistrationGuide from "@/lib/PasswordRegistrationGuide";
 
 type CredPayload = {
   loginUsuario?: string;
@@ -65,11 +66,10 @@ export default function ViewSecretPage() {
       {status === "ok" && data && (
         <>
           <div className="section-title">Usuário e senha da máquina e e-mail</div>
-          <div className="note-box" style={{ marginBottom: 10 }}>
-            Utilizamos o mesmo login e senha para sua máquina e e-mail.
-          </div>
           <Row label="Usuário" value={data.loginUsuario} />
-          <Row label="Senha" value={data.loginSenha} />
+          <Row label="Senha temporária" value={data.loginSenha} />
+
+          <PasswordRegistrationGuide />
 
           {(data.adobeUsuario || data.adobeSenha) && (
             <>
@@ -107,6 +107,8 @@ export default function ViewSecretPage() {
           </p>
         </div>
       )}
+
+      {(status === "expired" || status === "unavailable") && <PasswordRegistrationGuide />}
 
       <FixedContent />
     </div>

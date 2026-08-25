@@ -4,6 +4,7 @@ import { useState } from "react";
 import QRCode from "qrcode";
 import { encryptJson, exportKeyToUrlSafeString, generateKey } from "@/lib/webcrypto";
 import FixedContent from "@/lib/FixedContent";
+import PasswordRegistrationGuide from "@/lib/PasswordRegistrationGuide";
 
 type FormState = {
   nomeColaborador: string;
@@ -165,12 +166,12 @@ export default function PainelPage() {
             <input value={form.loginUsuario} onChange={(e) => update("loginUsuario", e.target.value)} />
           </div>
           <div className="field">
-            <label>Senha</label>
+            <label>Senha temporária</label>
             <input value={form.loginSenha} onChange={(e) => update("loginSenha", e.target.value)} />
           </div>
           <div className="note-box">
-            Utilizamos o mesmo login e senha para a máquina e o e-mail. Basta usar a senha
-            de e-mail para logar na máquina também.
+            Esta senha é temporária. O colaborador deverá alterá-la após o primeiro acesso
+            e seguir as instruções de sincronização com o Mac.
           </div>
 
           <div className="section-title-row">
@@ -236,6 +237,7 @@ export default function PainelPage() {
 
           <div className="fixed-preview">
             <div className="fixed-preview-title">Conteúdo fixo</div>
+            <PasswordRegistrationGuide />
             <FixedContent />
           </div>
         </form>

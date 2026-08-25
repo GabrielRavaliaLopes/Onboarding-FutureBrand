@@ -245,6 +245,85 @@ button.ghost:hover { background: #efefec; border-color: #777; }
   line-height: 1.65;
 }
 .fixed-important strong { color: var(--warn); }
+.password-guide { margin-top: 28px; }
+.password-reset-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 24px;
+  background: #000;
+  color: #fff;
+  border-radius: 6px;
+}
+.password-reset-eyebrow {
+  margin-bottom: 7px;
+  color: #bdbdb7;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+.password-reset-card h2 { font-size: 24px; letter-spacing: -.025em; }
+.password-reset-card p { margin: 8px 0 0; color: #d1d1cc; font-size: 15px; line-height: 1.5; }
+.password-reset-card a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-width: 220px;
+  padding: 13px 14px;
+  color: #000;
+  background: #fff;
+  border: 1px solid #fff;
+  border-radius: 3px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background .18s ease, color .18s ease;
+}
+.password-reset-card a:hover { color: #fff; background: #222; }
+.password-guide-intro { margin: 0 0 16px; color: var(--text-muted); font-size: 16px; line-height: 1.65; }
+.password-steps { display: grid; gap: 14px; margin: 0; padding: 0; list-style: none; }
+.password-step {
+  padding: 22px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+}
+.password-step-heading { display: flex; align-items: center; gap: 11px; }
+.password-step-heading > span {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  flex: 0 0 auto;
+  place-items: center;
+  color: #fff;
+  background: #000;
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: 600;
+}
+.password-step h3 { font-size: 20px; letter-spacing: -.02em; }
+.password-step > p { margin: 13px 0 17px; color: var(--text-muted); font-size: 15px; line-height: 1.65; }
+.password-step > p strong { color: var(--text); }
+.password-step-image {
+  overflow: hidden;
+  padding: 10px;
+  background: #f3f3f0;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+.password-step-image img { display: block; width: 100%; height: auto; object-fit: contain; }
+.password-complete {
+  margin-top: 16px;
+  padding: 20px 22px;
+  background: var(--surface-2);
+  border-left: 3px solid #000;
+}
+.password-complete > strong { display: block; margin-bottom: 8px; font-size: 20px; }
+.password-complete p { margin: 6px 0 0; color: var(--text-muted); font-size: 15px; line-height: 1.6; }
+.password-complete p strong { color: var(--text); }
 .whatsapp-link,
 .support-trigger {
   display: inline-flex;
@@ -378,6 +457,11 @@ a.support-channel:hover { background: var(--surface-hover); border-color: var(--
   .card { padding: 20px; }
   .section-title-row { align-items: flex-start; }
   .credential-row { align-items: flex-start; }
+  .password-reset-card { align-items: stretch; flex-direction: column; padding: 20px; }
+  .password-reset-card a { min-width: 0; width: 100%; }
+  .password-step { padding: 18px; }
+  .password-step h3 { font-size: 18px; }
+  .password-step-image { padding: 6px; }
   .support-modal-backdrop { align-items: end; padding: 0; }
   .support-modal {
     width: 100%;
