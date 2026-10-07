@@ -9,7 +9,6 @@ import PasswordRegistrationGuide from "@/lib/PasswordRegistrationGuide";
 type FormState = {
   nomeColaborador: string;
   loginUsuario: string;
-  loginSenha: string;
   adobeUsuario: string;
   adobeSenha: string;
   outrasInfos: string;
@@ -20,7 +19,6 @@ type EmailStatus = "idle" | "sending" | "sent" | "failed";
 const EMPTY: FormState = {
   nomeColaborador: "",
   loginUsuario: "",
-  loginSenha: "",
   adobeUsuario: "",
   adobeSenha: "",
   outrasInfos: "",
@@ -53,7 +51,6 @@ export default function PainelPage() {
     try {
       const payload: Partial<FormState> = {
         loginUsuario: form.loginUsuario,
-        loginSenha: form.loginSenha,
       };
       if (usarAdobe) {
         payload.adobeUsuario = form.adobeUsuario;
@@ -175,7 +172,7 @@ export default function PainelPage() {
             />
           </div>
 
-          <div className="section-title">Usuário e senha da máquina e e-mail</div>
+          <div className="section-title">E-mail corporativo e acesso ao Mac</div>
           <div className="field">
             <label>E-mail do colaborador</label>
             <input
@@ -187,13 +184,10 @@ export default function PainelPage() {
               required
             />
           </div>
-          <div className="field">
-            <label>Senha temporária</label>
-            <input value={form.loginSenha} onChange={(e) => update("loginSenha", e.target.value)} />
-          </div>
           <div className="note-box">
-            Esta senha é temporária. O colaborador deverá alterá-la após o primeiro acesso
-            e seguir as instruções de sincronização com o Mac.
+            Este e-mail também é o usuário para entrar no Mac. A senha será definida ou alterada
+            com o colaborador no primeiro acesso. Quando a senha do e-mail mudar, conclua o registro
+            no Portal da Empresa para sincronizar a senha do Mac.
           </div>
 
           <div className="section-title-row">
@@ -250,7 +244,7 @@ export default function PainelPage() {
           <span className="badge">Onboarding pronto</span>
           <p className="lead" style={{ marginTop: 14 }}>
             Envie este link ou apresente o QR Code para {form.nomeColaborador || "o colaborador"}.
-            A senha informada é temporária e deve ser alterada após o primeiro acesso.
+            A senha de acesso será definida ou alterada com o colaborador no primeiro acesso.
           </p>
           <div className="link-box">{link}</div>
           {qrDataUrl && (

@@ -8,7 +8,6 @@ import PasswordRegistrationGuide from "@/lib/PasswordRegistrationGuide";
 
 type CredPayload = {
   loginUsuario?: string;
-  loginSenha?: string;
   adobeUsuario?: string;
   adobeSenha?: string;
   outrasInfos?: string;
@@ -65,9 +64,13 @@ export default function ViewSecretPage() {
 
       {status === "ok" && data && (
         <>
-          <div className="section-title">Usuário e senha da máquina e e-mail</div>
-          <Row label="Usuário" value={data.loginUsuario} />
-          <Row label="Senha temporária" value={data.loginSenha} />
+          <div className="section-title">E-mail corporativo e acesso ao Mac</div>
+          <Row label="E-mail" value={data.loginUsuario} />
+          <div className="note-box">
+            Seu e-mail corporativo também é usado para entrar no Mac. A senha será definida ou
+            alterada com você no primeiro acesso. Quando a senha do e-mail mudar, conclua o registro
+            no Portal da Empresa para sincronizar a senha do Mac.
+          </div>
 
           <PasswordRegistrationGuide />
 
